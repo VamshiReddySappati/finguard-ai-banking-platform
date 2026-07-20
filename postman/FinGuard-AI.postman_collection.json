@@ -1,0 +1,128 @@
+{
+  "info": {
+    "name": "FinGuard AI API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080"
+    },
+    {
+      "key": "token",
+      "value": ""
+    },
+    {
+      "key": "adminToken",
+      "value": ""
+    }
+  ],
+  "item": [
+    {
+      "name": "Login customer",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"customer@finguard.dev\",\n  \"password\": \"Password123!\"\n}"
+        },
+        "url": "{{baseUrl}}/api/auth/login"
+      }
+    },
+    {
+      "name": "List accounts",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": "{{baseUrl}}/api/accounts"
+      }
+    },
+    {
+      "name": "Create transfer",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          },
+          {
+            "key": "Idempotency-Key",
+            "value": "{{$guid}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"sourceAccountId\": \"aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa\",\n  \"destinationAccountId\": \"cccccccc-cccc-cccc-cccc-cccccccccccc\",\n  \"amount\": 250.00\n}"
+        },
+        "url": "{{baseUrl}}/api/transactions"
+      }
+    },
+    {
+      "name": "List transactions",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": "{{baseUrl}}/api/transactions"
+      }
+    },
+    {
+      "name": "Login fraud analyst",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"admin@finguard.dev\",\n  \"password\": \"Admin123!\"\n}"
+        },
+        "url": "{{baseUrl}}/api/auth/login"
+      }
+    },
+    {
+      "name": "Generate AI investigation brief",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{adminToken}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"transactionId\": \"00000000-0000-0000-0000-000000000001\",\n  \"amount\": 5000.00,\n  \"currency\": \"USD\",\n  \"status\": \"FLAGGED\",\n  \"riskScore\": 55,\n  \"reasons\": [\"Large transfer requires analyst approval\"],\n  \"eventTypes\": [\"TRANSACTION_INITIATED\", \"FRAUD_DECISION_FLAGGED\"]\n}"
+        },
+        "url": "{{baseUrl}}/api/investigations/brief"
+      }
+    }
+  ]
+}
