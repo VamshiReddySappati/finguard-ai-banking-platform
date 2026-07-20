@@ -17,39 +17,8 @@ FinGuard AI is a portfolio-grade banking platform that demonstrates secure Java 
 
 A basic CRUD banking application does not prove distributed-systems ability. FinGuard separates transfer acceptance, risk evaluation, balance mutation, and auditing across independently deployable services. The system intentionally handles duplicate requests, duplicate events, downstream failures, and manual review.
 
-## Architecture
 
-```mermaid
-sequenceDiagram
-  participant UI as React Dashboard
-  participant TX as Transaction Service
-  participant K as Kafka
-  participant F as Fraud Service
-  participant A as Account Service
-  participant AU as Audit Service
-  participant AI as Investigation Service
 
-  UI->>TX: POST /transactions + Idempotency-Key
-  TX->>TX: Save PENDING_REVIEW + outbox
-  TX-->>UI: 202 Accepted
-  TX->>K: transaction.initiated.v1
-  K->>F: Evaluate rules and velocity
-  F->>K: fraud.decision.v1
-  K->>TX: APPROVED / FLAGGED / REJECTED
-  alt approved
-    TX->>A: Atomic idempotent ledger transfer
-    TX->>K: transaction.completed.v1
-  else flagged
-    TX->>TX: Wait for analyst decision
-  else rejected
-    TX->>TX: Mark rejected; balances unchanged
-  end
-  K->>AU: Persist event evidence
-  UI->>AI: Request evidence-grounded case brief
-  AI-->>UI: OpenAI response or safe local fallback
-```
-
-See [Architecture](docs/architecture.md) and [Threat Model](docs/threat-model.md).
 
 ## Technology
 
