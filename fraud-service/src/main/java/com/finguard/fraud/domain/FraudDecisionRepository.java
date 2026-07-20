@@ -1,0 +1,2 @@
+package com.finguard.fraud.domain;import org.springframework.data.jpa.repository.JpaRepository;import java.util.*;
+public interface FraudDecisionRepository extends JpaRepository<FraudDecisionRecord,UUID>{Optional<FraudDecisionRecord> findByTransactionId(UUID transactionId);List<FraudDecisionRecord> findTop100ByPublishedFalseOrderByCreatedAtAsc();List<FraudDecisionRecord> findAllByOrderByCreatedAtDesc();}

@@ -1,0 +1,3 @@
+package com.finguard.fraud.messaging;
+import com.fasterxml.jackson.databind.ObjectMapper;import com.finguard.events.TransactionInitiatedEvent;import com.finguard.fraud.service.FraudDecisionService;import org.springframework.kafka.annotation.KafkaListener;import org.springframework.stereotype.Component;
+@Component public class TransactionInitiatedConsumer {private final ObjectMapper mapper;private final FraudDecisionService service;public TransactionInitiatedConsumer(ObjectMapper mapper,FraudDecisionService service){this.mapper=mapper;this.service=service;}@KafkaListener(topics="transaction.initiated.v1",groupId="fraud-service")public void consume(String payload)throws Exception{service.evaluate(mapper.readValue(payload,TransactionInitiatedEvent.class));}}

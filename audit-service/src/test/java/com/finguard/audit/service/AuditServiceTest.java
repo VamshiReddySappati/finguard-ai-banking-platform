@@ -1,0 +1,2 @@
+package com.finguard.audit.service;import com.finguard.audit.domain.*;import org.junit.jupiter.api.Test;import java.util.UUID;import static org.mockito.Mockito.*;
+class AuditServiceTest {@Test void ignoresDuplicateSourceEvent(){AuditEventRepository repo=mock(AuditEventRepository.class);UUID id=UUID.randomUUID();when(repo.existsBySourceEventId(id)).thenReturn(true);new AuditService(repo).record(id,UUID.randomUUID(),"TYPE","{}");verify(repo,never()).save(any());}}

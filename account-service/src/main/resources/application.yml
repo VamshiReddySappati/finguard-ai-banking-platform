@@ -1,0 +1,26 @@
+server:
+  port: ${SERVER_PORT:8082}
+spring:
+  application:
+    name: account-service
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/account_db}
+    username: ${DB_USER:finguard}
+    password: ${DB_PASSWORD:finguard}
+  jpa:
+    hibernate:
+      ddl-auto: update
+    open-in-view: false
+security:
+  jwt:
+    secret: ${JWT_SECRET:change-this-demo-secret-to-at-least-32-characters}
+  internal-token: ${INTERNAL_SERVICE_TOKEN:change-this-internal-service-token}
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus
+  endpoint:
+    health:
+      probes:
+        enabled: true

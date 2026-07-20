@@ -1,0 +1,2 @@
+package com.finguard.audit.api;import com.finguard.audit.domain.AuditEvent;import java.time.Instant;import java.util.UUID;
+public record AuditEventResponse(UUID id,UUID sourceEventId,UUID transactionId,String eventType,String payload,Instant createdAt){public static AuditEventResponse from(AuditEvent e){return new AuditEventResponse(e.getId(),e.getSourceEventId(),e.getTransactionId(),e.getEventType(),e.getPayload(),e.getCreatedAt());}}

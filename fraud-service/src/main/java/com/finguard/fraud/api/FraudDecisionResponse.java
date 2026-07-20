@@ -1,0 +1,2 @@
+package com.finguard.fraud.api;import com.finguard.events.FraudDecisionType;import com.finguard.fraud.domain.FraudDecisionRecord;import java.time.Instant;import java.util.*;
+public record FraudDecisionResponse(UUID transactionId,FraudDecisionType decision,int riskScore,List<String> reasons,Instant createdAt,Instant updatedAt){public static FraudDecisionResponse from(FraudDecisionRecord r){return new FraudDecisionResponse(r.getTransactionId(),r.getDecision(),r.getRiskScore(),r.getReasons(),r.getCreatedAt(),r.getUpdatedAt());}}
